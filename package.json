@@ -1,6 +1,6 @@
 {
   "name": "@hornbeck/validators",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "MIT",
   "author": {
     "name": "Mads Hornbeck",
@@ -14,9 +14,6 @@
     "url": "https://github.com/MadsHornbeck/validators.git"
   },
   "keywords": [
-    "react",
-    "form",
-    "input",
     "error",
     "schema",
     "validate",
