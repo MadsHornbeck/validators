@@ -19,7 +19,7 @@ All the functions are automatically curried and should be easy to use for any us
 This is to allow for variable amount of prefilling of values.
 All of the functions can be called in any of the follow ways.
 
-```
+```js
 import { max } from "@hornbeck/validators";
 
 const max12 = max(12);
@@ -35,6 +35,46 @@ max12("Message", a);
 max(12, "Message", a);
 max(12)("Message")(a);
 ```
+
+### `schema`
+
+Using `schema` you'll be able to define the rules for a validation function by
+passing in an object in the same shape as your values.
+
+It automatically wraps the entire validation result if any of your validations are run asynchronously.
+
+```js
+import { shape, required, email } from "@hornbeck/validators";
+
+const validate = shape({
+    firstName: required("Required"),
+    email: [required("Required"), email("Must be a valid email")]
+    address: {
+        line1: required("Required"),
+        postcode: required("Required"),
+    }
+})
+
+validate({
+    firstName: "",
+    email: "asdf@",
+    address: {
+        line1: "",
+        postcode: "",
+    },
+})
+// returns
+{
+    firstName: "Required",
+    email: "Must be a valid email",
+    address: {
+        line1: "Required",
+        postcode: "Required",
+    },
+}
+```
+
+### Validators
 
 - required
 - maxLength
