@@ -1,19 +1,22 @@
-const isAsync = (ent) =>
+const isAsync = /*#__PURE__*/ (ent) =>
   ent.some(([, e]) =>
     Array.isArray(e)
       ? e.some((r) => r instanceof Promise)
       : e instanceof Promise
   );
 
-const maybeAsyncFromEntries = (ents) =>
-  isAsync(ents)
-    ? Promise.all(
-        ents.map(async ([k, e]) => [
-          k,
-          await (Array.isArray(e) ? Promise.all(e) : e),
-        ])
-      ).then(Object.fromEntries)
-    : Object.fromEntries(ents);
+function /*#__PURE__*/ fromEntries(ents) {
+  const es = ents.filter(([, v]) => (Array.isArray(v) ? v.some(Boolean) : v));
+  return es.length ? Object.fromEntries(es) : undefined;
+}
+
+async function /*#__PURE__*/ asyncFromEntries(ents) {
+  const es = ents.map(async ([k, v]) => [
+    k,
+    await (Array.isArray(v) ? Promise.all(v) : v),
+  ]);
+  return fromEntries(await Promise.all(es));
+}
 
 export default function /*#__PURE__*/ schema(s) {
   const fn = ([k, v]) => [
@@ -31,10 +34,10 @@ export default function /*#__PURE__*/ schema(s) {
   ];
   const validate = Object.fromEntries(Object.entries(s).map(fn));
   return (values) => {
-    const entries = Object.entries(values).map(([k, val]) => [
+    const entries = Object.entries(validate).map(([k, f]) => [
       k,
-      Array.isArray(val) ? val.map((v) => validate[k](v)) : validate[k](val),
+      Array.isArray(values[k]) ? values[k].map(f) : f(values[k]),
     ]);
-    return maybeAsyncFromEntries(entries);
+    return isAsync(entries) ? asyncFromEntries(entries) : fromEntries(entries);
   };
 }
