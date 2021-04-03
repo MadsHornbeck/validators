@@ -1,6 +1,6 @@
 {
   "name": "@hornbeck/validators",
-  "version": "0.2.2",
+  "version": "1.0.0",
   "license": "MIT",
   "author": {
     "name": "Mads Hornbeck",
@@ -21,9 +21,11 @@
     "validation",
     "check"
   ],
+  "main": "index.cjs",
   "module": "src/index.js",
   "sideEffects": false,
   "files": [
+    "index.cjs",
     "src"
   ]
 }
