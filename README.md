@@ -1,4 +1,4 @@
-# @hornbeck/react-form
+# @hornbeck/validators
 
 ![npm](https://img.shields.io/npm/v/@hornbeck/validators)
 ![npm](https://img.shields.io/npm/l/@hornbeck/validators)
@@ -44,9 +44,9 @@ passing in an object in the same shape as your values.
 It automatically wraps the entire validation result if any of your validations are run asynchronously.
 
 ```js
-import { shape, required, email } from "@hornbeck/validators";
+import { schema, required, email } from "@hornbeck/validators";
 
-const validate = shape({
+const validate = schema({
     firstName: required("Required"),
     email: [required("Required"), email("Must be a valid email")]
     address: {
