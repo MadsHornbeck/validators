@@ -2,10 +2,10 @@ import validateFn from "./validateFn";
 
 // TODO: add unit tests for all validation functions
 
-export const pattern = /*#__PURE__*/ (regex) => {
+export const pattern = /*#__PURE__*/ (regex, ...rest) => {
   if (!(regex instanceof RegExp))
     throw new Error(`${regex} is not a valid regex`);
-  return validateFn((value) => regex.test(value));
+  return validateFn((value) => regex.test(value), ...rest);
 };
 
 export /*#__PURE__*/ function required(message, value) {
